@@ -41,12 +41,12 @@ function Createexpensecompo({}: Props) {
     }
 
     return (
-        <div  style={{margin:"50px"}}>
+        <div  style={{margin:"50px",marginTop:"100px"}}>
             <Text fontSize='2xl' textAlign="center" mb="5">Create New Expense Log</Text>
             <Flex justify="space-between" ml="100">
                 <form style={{width:"40vw"}} onSubmit={submitExpense}>
                     <FormControl isRequired mb="3">
-                        <FormLabel>UserName:</FormLabel>
+                        <FormLabel >UserName:</FormLabel>
                         <Select placeholder='select user' onChange={(e)=>setname(e.target.value)}>
                             <>
                                 {users.map((users,index)=>{

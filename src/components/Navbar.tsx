@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 function Navbar() {
   const isPc = useMediaQuery('(min-width: 600px)')
   return (
-    <div>
+    <div style={{position:"fixed",top:"0",width:"100%",overflow:"hidden",zIndex:"4"}}>
         <Box as="section" bg="#fbc116" p="2" pt="5" pb="5">
             <Box as="nav">
                 <HStack>
