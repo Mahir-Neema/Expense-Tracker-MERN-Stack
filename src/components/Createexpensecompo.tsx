@@ -15,9 +15,9 @@ function Createexpensecompo({}: Props) {
     const [alert,setalert] = useState(false);
 
     // useEffect(()=>{
-    //     setname("testuser");
+    //     setname("Testuser");
     //     setdes("test des");
-    //     setcost(90);
+    //     setcost('90');
     //     setDate(Date());
     //     setusers([...users,"mahir"]);
     //     console.log("hello")
@@ -36,18 +36,23 @@ function Createexpensecompo({}: Props) {
         setalert(true);
         setTimeout(() => {
             setalert(false);
+            setname('');
+            setdes('');
+            setcost('');
+            setDate('');
         }, 3000);
         
     }
 
     return (
-        <div  style={{margin:"50px",marginTop:"100px"}}>
+        <div>  
+            {/* style={{margin:"50px",marginTop:"100px"}} */}
             <Text fontSize='2xl' textAlign="center" mb="5">Create New Expense Log</Text>
             <Flex justify="space-between" ml="100">
                 <form style={{width:"40vw"}} onSubmit={submitExpense}>
                     <FormControl isRequired mb="3">
                         <FormLabel >UserName:</FormLabel>
-                        <Select placeholder='select user' onChange={(e)=>setname(e.target.value)}>
+                        <Select placeholder='select user' onChange={(e)=>setname(e.target.value)} size='sm'>
                             <>
                                 {users.map((users,index)=>{
                                     return <option key="index" value={users}>{users}</option>
@@ -59,19 +64,19 @@ function Createexpensecompo({}: Props) {
 
                     <FormControl mb="3">
                         <FormLabel>Description</FormLabel>
-                        <Input type='text' onChange={(e)=>setdes(e.target.value)}/>
+                        <Input type='text' onChange={(e)=>setdes(e.target.value)} size='xs'/>
                         {des?<FormHelperText>You added {des} as an expense</FormHelperText>:<FormHelperText>Add the description of Expense</FormHelperText>}
                     </FormControl>
 
                     <FormControl mb="3">
                         <FormLabel>Expense</FormLabel>
-                        <Input type='number' onChange={(e)=>setcost(e.target.value)}/>
+                        <Input type='number' onChange={(e)=>setcost(e.target.value)} size='xs'/>
                         {des ?<FormHelperText>{cost} ruppes spent on {des}</FormHelperText>:<FormHelperText>Add the cost of Expense</FormHelperText>}
                     </FormControl>
 
                     <FormControl>
                         <FormLabel>Date</FormLabel>
-                        <Input type='date' onChange={(e)=>setDate(e.target.value)}/>
+                        <Input type='date' onChange={(e)=>setDate(e.target.value)} size='xs'/>
                         {date ?<FormHelperText>{date} selected</FormHelperText>:<FormHelperText>Add the date of expense</FormHelperText>}
                     </FormControl>
 
