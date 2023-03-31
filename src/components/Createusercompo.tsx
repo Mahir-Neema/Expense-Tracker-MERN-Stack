@@ -9,10 +9,14 @@ function Createusercompo({}: Props) {
     const [alert,setalert] = useState(false);
 
     const submituser = () =>{
-        const user = name;
+        const user = {
+            username: name
+        };
         console.log(user);
+        setname('');
+        axios.post('http://localhost:5000/users/add', user).then( res => console.log(res.data));
+        
         setalert(true);
-
         setTimeout(() => {
             setalert(false);
         }, 3000);
