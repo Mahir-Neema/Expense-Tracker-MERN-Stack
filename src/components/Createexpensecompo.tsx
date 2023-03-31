@@ -1,42 +1,44 @@
 import { useEffect, useState } from 'react'
 import React from 'react'
+import axios from 'axios';
 import {Text,FormControl,FormLabel,Input,FormHelperText, Select, Box, Flex, Button, Alert, AlertIcon,} from '@chakra-ui/react'
 
 
 type Props = {}
 
 function Createexpensecompo({}: Props) {
-    const [name,setname] = useState('');
-    const [users,setusers] = useState(["Testuser"]);
+    const [username,setusername] = useState('');
+    const [users,setusers] = useState(["Testuser 16:25"]);
     const [des,setdes] = useState('');
     const [cost,setcost] = useState('');
     const [date,setDate] = useState('');
 
     const [alert,setalert] = useState(false);
 
-    // useEffect(()=>{
-    //     setname("Testuser");
-    //     setdes("test des");
-    //     setcost('90');
-    //     setDate(Date());
-    //     setusers([...users,"mahir"]);
-    //     console.log("hello")
-    // },[]);
+    useEffect(()=>{
+        axios.get('http://localhost:5000/users').then((response)=>{
+            if(response.data.length > 0){
+                setusers(response.data.map((user:{},index:number) => response.data[index].username));
+                setusername(response.data[0].username);
+            } 
+        })
+        .catch(()=> console.log("can't fetch usernames"))
+    },[]);
 
     const expense = {
-        username: name,
-        des: des,
+        username: username,
+        description: des,
         cost: cost,
-        date: new Date(),
-        users: users
+        date: date
     }
 
     const submitExpense = () =>{
         console.log(expense);
+        axios.post('http://localhost:5000/expenses/add',expense).then(res => console.log("added "+res.data));
         setalert(true);
         setTimeout(() => {
             setalert(false);
-            setname('');
+            setusername('');
             setdes('');
             setcost('');
             setDate('');
@@ -52,14 +54,14 @@ function Createexpensecompo({}: Props) {
                 <form style={{width:"40vw"}} onSubmit={submitExpense}>
                     <FormControl isRequired mb="3">
                         <FormLabel >UserName:</FormLabel>
-                        <Select placeholder='select user' onChange={(e)=>setname(e.target.value)} size='sm'>
+                        <Select placeholder='select user' onChange={(e)=>setusername(e.target.value)} size='sm'>
                             <>
                                 {users.map((users,index)=>{
                                     return <option key="index" value={users}>{users}</option>
                                 })}
                             </>
                         </Select>
-                        {name ?<FormHelperText>{name} user selected</FormHelperText>:<FormHelperText>Please select the user</FormHelperText>}
+                        {username ?<FormHelperText>{username} user selected</FormHelperText>:<FormHelperText>Please select the user</FormHelperText>}
                     </FormControl>
 
                     <FormControl mb="3">
@@ -84,9 +86,9 @@ function Createexpensecompo({}: Props) {
                 </form>
                 {alert ?<Alert status='success' variant='solid' w="100" h="10"><AlertIcon/>Expense uploaded to the server. Fire on!</Alert>:
                 <Box mr="100" bgColor="#ececec" mt="4" border="1px" p="10" borderColor="blue" w="400px" h="200" borderRadius="6px">
-                    {name ? <Text>{name}</Text>: <Text>No user selected</Text>}
+                    {username ? <Text>{username}</Text>: <Text>No user selected</Text>}
                     <br/>
-                    {name&&cost&&date ?<Text>Adding {des} as an Expense of cost {cost} on {date}</Text>:<Text>Add the fields</Text>}
+                    {username&&cost&&date ?<Text>Adding {des} as an Expense of cost {cost} on {date}</Text>:<Text>Add the fields</Text>}
                 </Box>}
             </Flex>
         </div>

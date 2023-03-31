@@ -7,6 +7,7 @@ type Props = {}
 function Createusercompo({}: Props) {
     const [name,setname] = useState(''); 
     const [alert,setalert] = useState(false);
+    const [erroralert,seterroralert] = useState(false);
 
     const submituser = () =>{
         const user = {
@@ -14,12 +15,16 @@ function Createusercompo({}: Props) {
         };
         console.log(user);
         setname('');
-        axios.post('http://localhost:5000/users/add', user).then( res => console.log(res.data));
-        
-        setalert(true);
+        axios.post('http://localhost:5000/users/add', user).then(
+            (res) => {console.log(res.data),setalert(true);}
+        ).catch(
+            ()=> seterroralert(true)
+        );
+
         setTimeout(() => {
             setalert(false);
-        }, 3000);
+            seterroralert(false);
+        }, 5000);
     }
 
   return (
@@ -36,6 +41,14 @@ function Createusercompo({}: Props) {
                 {name?<Button mt="5" colorScheme="yellow" onClick={submituser}>Add user</Button>:<Text>Enter the username</Text>}
                 </form>:
                 <Alert status='success' variant='solid' w="100" h="10"><AlertIcon/>User added 🥳</Alert>
+            }
+
+            {erroralert?
+                <Alert status='error'>
+                    <AlertIcon />
+                    There was an error processing your request
+                </Alert>:
+                <Box></Box>
             }
         </Box>
     </div>
